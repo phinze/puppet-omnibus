@@ -3,11 +3,11 @@ class PuppetOmnibus < FPM::Cookery::Recipe
 
   section 'Utilities'
   name 'puppet-omnibus'
-  version '3.3.1'
+  version '2.7.23'
   description 'Puppet Omnibus package'
   revision 0
   vendor 'fpm'
-  maintainer '<github@tinycat.co.uk>'
+  maintainer '<paulh@instructure.com>'
   license 'Apache 2.0 License'
 
   source '', :with => :noop
@@ -16,6 +16,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   omnibus_dir     "/opt/#{name}"
   omnibus_recipes 'libyaml',
                   'ruby',
+                  'rubygems',
                   'puppet',
                   'aws'
 

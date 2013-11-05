@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :precise do |node3|
     node3.vm.hostname = "precise"
-    node3.vm.box      = "precise"
+    node3.vm.box      = "precise64"
     node3.vm.box_url  = "http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210.box"
   end
 

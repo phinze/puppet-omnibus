@@ -16,6 +16,8 @@ class AwsGems < FPM::Cookery::Recipe
   end
 
   def build
+    gem_install 'mime-types',  '1.25'
+    gem_install 'nokogiri',    '1.5.10'
     gem_install 'aws-sdk',     '1.8.5'
     gem_install 'fog',         '1.10.0'
   end

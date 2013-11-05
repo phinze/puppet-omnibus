@@ -1,14 +1,14 @@
-class Ruby193 < FPM::Cookery::Recipe
+class Ruby187 < FPM::Cookery::Recipe
   description 'The Ruby virtual machine'
 
   name 'ruby'
-  version '2.0.0.247'
+  version '1.8.7.374'
   revision 1
   homepage 'http://www.ruby-lang.org/'
-  source 'http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.bz2'
-  sha256 '08e3d4b85b8a1118a8e81261f59dd8b4ddcfd70b6ae554e0ec5ceb99c3185e8a'
+  source 'http://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p374.tar.bz2'
+  sha256 'b4e34703137f7bfb8761c4ea474f7438d6ccf440b3d35f39cc5e4d4e239c07e3'
 
-  maintainer '<github@tinycat.co.uk>'
+  maintainer '<paulh@instructure.com>'
   vendor     'fpm'
   license    'The Ruby License'
 
@@ -60,7 +60,7 @@ class Ruby193 < FPM::Cookery::Recipe
   def install
     make :install
     # Shrink package.
-    rm_f "#{destdir}/lib/libruby-static.a"
+    # rm_f "#{destdir}/lib/libruby-static.a"
     safesystem "strip #{destdir}/bin/ruby"
     safesystem "find #{destdir} -name '*.so' -or -name '*.so.*' | xargs strip"
   end

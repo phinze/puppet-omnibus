@@ -104,6 +104,40 @@ for BIN in $BINS; do
   update-alternatives --install /usr/bin/$BIN $BIN $BIN_PATH/$BIN 100
 done
 
+#
+# Taken from the puppet-common.postinst here:
+# https://github.com/puppetlabs/puppet/blob/2.7.23/ext/debian/puppet-common.postinst
+#
+if [ "$1" = "configure" ]; then
+
+	# Create the "puppet" user
+	if ! getent passwd puppet > /dev/null; then
+		adduser --quiet --system --group --home /var/lib/puppet  \
+			--no-create-home                                 \
+			--gecos "Puppet configuration management daemon" \
+			puppet
+	fi
+
+	# Set correct permissions and ownership for puppet directories
+	if ! dpkg-statoverride --list /var/log/puppet >/dev/null 2>&1; then
+		dpkg-statoverride --update --add puppet puppet 0750 /var/log/puppet
+	fi
+
+	if ! dpkg-statoverride --list /var/lib/puppet >/dev/null 2>&1; then
+		dpkg-statoverride --update --add puppet puppet 0750 /var/lib/puppet
+	fi
+
+	# Create folders common to "puppet" and "puppetmaster", which need
+	# to be owned by the "puppet" user
+	install --owner puppet --group puppet --directory \
+		/var/lib/puppet/state
+
+	# Handle
+	if [ -d /etc/puppet/ssl ] && [ ! -e /var/lib/puppet/ssl ] && grep -q 'ssldir=/var/lib/puppet/ssl' /etc/puppet/puppet.conf; then
+		mv /etc/puppet/ssl /var/lib/puppet/ssl
+	fi
+fi
+
 exit 0
       __POSTINST
     end
@@ -123,6 +157,37 @@ if [ "$1" != "upgrade" ]; then
     update-alternatives --remove $BIN $BIN_PATH/$BIN
   done
 fi
+
+#
+# Taken frmo the puppet-common.postrm here:
+# https://github.com/puppetlabs/puppet/blob/2.7.23/ext/debian/puppet-common.postrm
+#
+case "$1" in
+    purge)
+		# Remove puppetd.conf (used in > 0.24)
+		rm -f /etc/puppet/puppetd.conf
+
+		# Remove puppet state directory created by the postinst script.
+		# This directory can be removed without causing harm
+		# according to upstream documentation.
+		rm -rf /var/lib/puppet/state
+		if [ -d /var/lib/puppet ]; then
+			rmdir --ignore-fail-on-non-empty /var/lib/puppet
+		fi
+
+		# Remove puppet log files
+		rm -rf /var/log/puppet/
+		;;
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+
+
+        ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+
+esac
 
 exit 0
       __PRERM

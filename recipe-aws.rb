@@ -10,6 +10,15 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   maintainer '<paulh@instructure.com>'
   license 'Apache 2.0 License'
 
+  OLD_PACKAGES = %w[
+    puppet
+    puppet-common
+    facter
+  ]
+
+  conflicts *OLD_PACKAGES
+  replaces  *OLD_PACKAGES
+
   source '', :with => :noop
 
   omnibus_package true

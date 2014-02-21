@@ -5,7 +5,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   name 'puppet-omnibus'
   version '2.7.25'
   description 'Puppet Omnibus package'
-  revision 1
+  revision 2
   vendor 'fpm'
   maintainer 'Paul Hinze <paulh@instructure.com>'
   license 'Apache 2.0 License'

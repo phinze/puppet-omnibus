@@ -1,13 +1,13 @@
 class PuppetOmnibus < FPM::Cookery::Recipe
-  homepage 'https://github.com/andytinycat/puppet-omnibus'
+  homepage 'https://github.com/phinze/puppet-omnibus/tree/puppet2.7'
 
   section 'Utilities'
   name 'puppet-omnibus'
-  version '2.7.23'
+  version '2.7.25'
   description 'Puppet Omnibus package'
-  revision 0
+  revision 1
   vendor 'fpm'
-  maintainer '<paulh@instructure.com>'
+  maintainer 'Paul Hinze <paulh@instructure.com>'
   license 'Apache 2.0 License'
 
   OLD_PACKAGES = %w[
@@ -16,8 +16,8 @@ class PuppetOmnibus < FPM::Cookery::Recipe
     facter
   ]
 
-  conflicts *OLD_PACKAGES
-  replaces  *OLD_PACKAGES
+  conflicts(*OLD_PACKAGES)
+  replaces(*OLD_PACKAGES)
 
   source '', :with => :noop
 
